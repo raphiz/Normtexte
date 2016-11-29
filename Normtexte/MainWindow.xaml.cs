@@ -24,7 +24,23 @@ namespace Normtexte
 
         private void PasteFromExcelCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            
+            IDataObject dataObj = System.Windows.Clipboard.GetDataObject();
+            string clipboardRawData = dataObj.GetData(DataFormats.CommaSeparatedValue) as string;
+            if (clipboardRawData == null)
+            {
+                MessageBox.Show("Oups - Die Zwischenablage scheint nicht aus Excel zu kommen :/");
+                return;
+            }
+            string[] tokens = System.Text.RegularExpressions.Regex.Split(
+                clipboardRawData.Substring(1, clipboardRawData.Length - 2), @";");
+            if(tokens.Length < 5)
+            {
+                MessageBox.Show("Hoppla, nicht alles markiert beim Kopieren?");
+            }
+            string title = tokens[1];
+            string unit = tokens[2];
+            string price = tokens[5];
+
         }
 
         public MainWindow()
