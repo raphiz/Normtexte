@@ -1,0 +1,38 @@
+﻿<Window x:Class="Normtexte.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Normtexte"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="525">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:MainWindow.PasteFromExcel" Executed="PasteFromExcelCommand_Executed" />
+
+    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="V" Modifiers="Control" Command="local:MainWindow.PasteFromExcel" />
+    </Window.InputBindings>
+
+
+    <Grid>
+        <StackPanel Orientation="Vertical" Margin="20, 20, 20, 20">
+            <TextBox Text="Suche"/>
+            <TreeView Height="200" Margin="0 20 0 0"></TreeView>
+            <GroupBox Header="Details" Margin="0 10 0 0" Padding="0 5 0 5">
+                <StackPanel Name="details" Orientation="Vertical">
+                    <TextBlock FontWeight="Bold" Margin="0 0 0 5">Treppengerüste</TextBlock>
+                    <TextBlock>Lorem Impsum....</TextBlock>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Preise" Margin="0 10 0 0" Padding="0 5 0 5">
+                <Table>
+
+                </Table>
+            </GroupBox>
+
+
+        </StackPanel>
+
+    </Grid>
+</Window>
