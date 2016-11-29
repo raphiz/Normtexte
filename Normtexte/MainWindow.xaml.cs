@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,10 +43,42 @@ namespace Normtexte
             string price = tokens[5];
 
         }
+        private ObservableCollection<Category> _categories;
+        public ObservableCollection<Category> Categories
+        {
+            get { return _categories; }
+            set { _categories = value; }
+        }
+
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Categories = new ObservableCollection<Category>();
+            Categories.Add(new Category(){ Name = "Vorbedinungen" });
+            Categories.Add(new Category() { Name = "Vorarbeiten" });
+            Categories.Add(new Category() { Name = "Baustelleneinrichtung" });
+
+            DataContext = this;
         }
+
+    }
+
+    public class Category
+    {
+        public string Name { get; set; }
+
+        public ObservableCollection<Category> Members { get; set; }
+
+        public Category()
+        {
+            this.Members = new ObservableCollection<Category>();
+        }
+    }
+
+    class Normtext
+    {
+
     }
 }
