@@ -25,6 +25,7 @@ namespace Normtexte
 
         private void PasteFromExcelCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            // TODO: Extract!
             IDataObject dataObj = System.Windows.Clipboard.GetDataObject();
             string clipboardRawData = dataObj.GetData(DataFormats.CommaSeparatedValue) as string;
             if (clipboardRawData == null)
@@ -54,31 +55,75 @@ namespace Normtexte
         public MainWindow()
         {
             InitializeComponent();
-
-            Categories = new ObservableCollection<Category>();
-            Categories.Add(new Category(){ Name = "Vorbedinungen" });
-            Categories.Add(new Category() { Name = "Vorarbeiten" });
-            Categories.Add(new Category() { Name = "Baustelleneinrichtung" });
+            InitializeTestData();
 
             DataContext = this;
         }
 
+        private void InitializeTestData()
+        {
+
+            var categoryVorbedinungen = new Category() { Name = "Vorbedinungen" };
+            var categoryVorarbeiten = new Category() { Name = "Vorarbeiten" };
+            var categoryBaustelleneinrichtung = new Category() { Name = "Baustelleneinrichtung" };
+
+            Categories = new ObservableCollection<Category>()
+            {
+                categoryVorbedinungen,
+                categoryVorarbeiten,
+                categoryBaustelleneinrichtung
+            };
+
+            var categorySubVorarbeiten = new Category() { Name = "Vorarbeiten" };
+            var categorySubGeruesten = new Category() { Name = "Gerüsten" };
+            var categorySubGebuehren = new Category() { Name = "Gebühren" };
+
+            categoryBaustelleneinrichtung.Categories = new ObservableCollection<Category>()
+            {
+                categoryVorarbeiten,
+                categorySubGeruesten,
+                categorySubGebuehren
+            };
+
+            var optionFassadenGerueste = new Category() { Name = "Fassadengerüste" };
+            var optionRollGerueste = new Category() { Name = "Rollgerüste" };
+            var optionBockGerueste = new Category() { Name = "Bockgerüste" };
+            var optionTreppenGerueste = new Category() { Name = "Treppengerüste" };
+            var optionGeruestAmDach = new Category() { Name = "Gerüste am Dach" };
+
+            categorySubGeruesten.Options = new ObservableCollection<Category>()
+            {
+                optionFassadenGerueste,
+                optionRollGerueste,
+                optionBockGerueste,
+                optionTreppenGerueste,
+                optionGeruestAmDach
+            };
+
+
+        }
     }
 
     public class Category
     {
         public string Name { get; set; }
 
-        public ObservableCollection<Category> Members { get; set; }
+        public ObservableCollection<Category> Categories { get; set; }
+        public ObservableCollection<Category> Options { get; set; }
 
-        public Category()
-        {
-            this.Members = new ObservableCollection<Category>();
-        }
     }
 
-    class Normtext
+    public class Option
     {
+        public string Text { get; set; }
+        public string Unit { get; set; }
+        public ObservableCollection<Price> Prices { get; set; }
+    }
 
+    public class Price
+    {
+        public int from { get; set; }
+        public int to { get; set; }
+        public int pricePerUnit { get; set; }
     }
 }
