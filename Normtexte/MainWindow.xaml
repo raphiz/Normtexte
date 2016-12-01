@@ -18,36 +18,45 @@
     <Grid>
         <StackPanel Orientation="Vertical" Margin="20, 20, 20, 20">
             <TextBox Text="Suche"/>
-            <TreeView Height="200" Margin="0 20 0 0" ItemsSource="{Binding Categories}">
+            <TreeView Name="OptionTree" Height="200" Margin="0 20 0 0" ItemsSource="{Binding Categories}">
                 <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type local:Category}" ItemsSource="{Binding Categories}"> 
+                    <HierarchicalDataTemplate DataType="{x:Type local:Category}" ItemsSource="{Binding Children}"> 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type local:Option}">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Name}" />
+                            <TextBlock Text="{Binding ShortText}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
-
                 </TreeView.Resources>
             </TreeView>
 
             <GroupBox Header="Details" Margin="0 10 0 0" Padding="0 5 0 5">
                 <StackPanel Name="details" Orientation="Vertical">
-                    <TextBlock FontWeight="Bold" Margin="0 0 0 5">Treppengerüste</TextBlock>
-                    <TextBlock>Lorem Impsum....</TextBlock>
+                    <TextBlock FontWeight="Bold" Margin="0 0 0 5" Text="{Binding ElementName=OptionTree, Path=SelectedItem.ShortText}"></TextBlock>
+                    <TextBlock Text="{Binding ElementName=OptionTree, Path=SelectedItem.LongText}"></TextBlock>
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="Preise" Margin="0 10 0 0" Padding="0 5 0 5">
-                <Table>
-
-                </Table>
+                <DataGrid ItemsSource="{Binding ElementName=OptionTree, Path=SelectedItem.Prices}" AutoGenerateColumns="False"
+                          Height="200">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Grösse"                                             IsReadOnly="True">
+                            <DataGridTextColumn.Binding>
+                                <MultiBinding StringFormat="{}{0} - {1}">
+                                    <Binding Path="from" />
+                                    <Binding Path="to" />
+                                </MultiBinding>
+                            </DataGridTextColumn.Binding>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn  Header="Preis / Einheit" Width="*"
+                                             IsReadOnly="True" Binding="{Binding pricePerUnit}">
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
             </GroupBox>
-
-
         </StackPanel>
-
     </Grid>
 </Window>

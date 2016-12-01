@@ -78,20 +78,26 @@ namespace Normtexte
             var categorySubGeruesten = new Category() { Name = "Gerüsten" };
             var categorySubGebuehren = new Category() { Name = "Gebühren" };
 
-            categoryBaustelleneinrichtung.Categories = new ObservableCollection<Category>()
+            categoryBaustelleneinrichtung.Categories = new List<Category>()
             {
                 categoryVorarbeiten,
                 categorySubGeruesten,
                 categorySubGebuehren
             };
+            
+            var prices = new List<Price>()
+            {
+                new Price() { from=0, to=10, pricePerUnit=100 },
+                new Price() { from = 10, to = 100, pricePerUnit = 80 }
+        };
 
-            var optionFassadenGerueste = new Category() { Name = "Fassadengerüste" };
-            var optionRollGerueste = new Category() { Name = "Rollgerüste" };
-            var optionBockGerueste = new Category() { Name = "Bockgerüste" };
-            var optionTreppenGerueste = new Category() { Name = "Treppengerüste" };
-            var optionGeruestAmDach = new Category() { Name = "Gerüste am Dach" };
+            var optionFassadenGerueste = new Option() { Prices= prices, ShortText = "Fassadengerüste" , LongText="Bestehende Gaube komplett abbrechen und zur Entsorgung bereitstellen. \n Dach im Bereich der neuen Gaube ausdecken,\nLattung und Konterlattung abbrechen,\nUnterdach und Dämmung ausbauen und zur Entsorgung bereitstellen"};
+            var optionRollGerueste = new Option() { ShortText = "Rollgerüste" };
+            var optionBockGerueste = new Option() { ShortText = "Bockgerüste" };
+            var optionTreppenGerueste = new Option() { ShortText = "Treppengerüste" };
+            var optionGeruestAmDach = new Option() { ShortText = "Gerüste am Dach" };
 
-            categorySubGeruesten.Options = new ObservableCollection<Category>()
+            categorySubGeruesten.Options = new List<Option>()
             {
                 optionFassadenGerueste,
                 optionRollGerueste,
@@ -108,16 +114,26 @@ namespace Normtexte
     {
         public string Name { get; set; }
 
-        public ObservableCollection<Category> Categories { get; set; }
-        public ObservableCollection<Category> Options { get; set; }
+        public List<Category> Categories { get; set; }
+        public List<Option> Options { get; set; }
+
+        public List<Object> Children {
+            get {
+                List<Object>result = new List<Object>();
+                if (Categories != null) result.AddRange(Categories);
+                if (Options != null) result.AddRange(Options);
+                return result;
+            }
+        }
 
     }
 
     public class Option
     {
-        public string Text { get; set; }
+        public string ShortText { get; set; }
+        public string LongText { get; set; }
         public string Unit { get; set; }
-        public ObservableCollection<Price> Prices { get; set; }
+        public List<Price> Prices { get; set; }
     }
 
     public class Price
