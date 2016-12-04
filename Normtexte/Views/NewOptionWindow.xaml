@@ -1,0 +1,50 @@
+﻿<Window x:Class="Normtexte.Views.NewOptionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Normtexte"
+        xmlns:p="clr-namespace:Normtexte.Properties"
+        mc:Ignorable="d"
+        Title="{x:Static p:Resources.newOptionWindowTitle}" Height="590" Width="300">
+    <ScrollViewer>
+        <StackPanel Margin="20, 20, 20, 20">
+            <Label Content="Kurzbeschreibung:" />
+            <TextBox />
+            <Label Content="Beschreibung:" />
+            <TextBox TextWrapping="Wrap"
+                     Height="100"
+                     AcceptsReturn="True" />
+            <Label Content="Einheit" />
+            <!-- TODO: Autocomplete -->
+            <TextBox />
+
+            <GroupBox Header="Preise">
+                <StackPanel Orientation="Vertical">
+                    <DataGrid AutoGenerateColumns="False"
+                          Height="200"
+                          CanUserAddRows="True">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{x:Static p:Resources.priceSize}" 
+                                            IsReadOnly="True">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding StringFormat="{}{0} - {1}">
+                                        <Binding Path="from" />
+                                        <Binding Path="to" />
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="{x:Static p:Resources.pricePerUnit}"
+                                            Width="*"
+                                            IsReadOnly="True"
+                                            Binding="{Binding pricePerUnit}">
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </GroupBox>
+            <Button Margin="0 5 0 0"
+                    Content="Save"/>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

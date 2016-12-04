@@ -123,6 +123,9 @@
   <data name="details" xml:space="preserve">
     <value>Details</value>
   </data>
+  <data name="newOptionWindowTitle" xml:space="preserve">
+    <value>Neue Option</value>
+  </data>
   <data name="pasteFailIncompleteMessage" xml:space="preserve">
     <value>Hoppla, nicht alles markiert beim Kopieren?</value>
   </data>

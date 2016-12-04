@@ -2,6 +2,7 @@
 using Normtexte.Commands;
 using Normtexte.Models;
 using Normtexte.Utils;
+using Normtexte.Views;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -37,6 +38,12 @@ namespace Normtexte.ViewModels
             {
                 Toaster.Warning(Properties.Resources.pasteFailTitle, Properties.Resources.pasteFailIncompleteMessage);
             }
+            // TODO: How to call this?!
+            // View model shall be initialized with an option, generated from the clipboard
+            // Get current category?
+            var win = new NewOptionWindow();
+            // Show modal?
+            win.ShowDialog();
         }
 
         internal void CopySelectedOptionToClipboad()

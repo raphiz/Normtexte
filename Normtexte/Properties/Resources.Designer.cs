@@ -79,6 +79,15 @@ namespace Normtexte.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Neue Option.
+        /// </summary>
+        public static string newOptionWindowTitle {
+            get {
+                return ResourceManager.GetString("newOptionWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hoppla, nicht alles markiert beim Kopieren?.
         /// </summary>
         public static string pasteFailIncompleteMessage {
