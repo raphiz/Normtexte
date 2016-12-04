@@ -3,36 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:Normtexte.Models"
         xmlns:local="clr-namespace:Normtexte"
+        xmlns:p="clr-namespace:Normtexte.Properties"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Normtexte" Height="700" Width="525">
-    <Window.CommandBindings>
-        <CommandBinding Command="local:MainWindow.PasteFromExcel" Executed="PasteFromExcelCommand_Executed" />
-        <CommandBinding Command="local:MainWindow.CopyToClipboard" Executed="CopyToClipboardCommand_Executed" />
-    </Window.CommandBindings>
+        Title="{x:Static p:Resources.title}" Height="700" Width="525">
     <Window.InputBindings>
-        <KeyBinding Key="V" Modifiers="Control" Command="local:MainWindow.PasteFromExcel" />
-        <KeyBinding Key="C" Modifiers="Control" Command="local:MainWindow.CopyToClipboard" />
+        <KeyBinding Key="V" Modifiers="Control" Command="{Binding PasteCommand}" />
+        <KeyBinding Key="C" Modifiers="Control" Command="{Binding CopyCommand}" />
     </Window.InputBindings>
 
 
     <ScrollViewer VerticalScrollBarVisibility="Auto">
     <Grid>
         <StackPanel Orientation="Vertical" Margin="20, 20, 20, 20">
-                <TextBox Controls:TextBoxHelper.Watermark="Suche" BorderBrush="{StaticResource AccentBaseColorBrush}"/>
+                <TextBox Controls:TextBoxHelper.Watermark="{x:Static p:Resources.search}" BorderBrush="{StaticResource AccentBaseColorBrush}"/>
                 <TreeView Name="OptionTree" Height="200" Margin="0 20 0 0" ItemsSource="{Binding Categories}"
                           BorderBrush="{StaticResource AccentBaseColorBrush}"
                           BorderThickness="1"
                           MouseDoubleClick="OptionTree_MouseDoubleClick"
                           KeyUp="OptionTree_KeyUp">
                 <TreeView.Resources>
-                    <HierarchicalDataTemplate DataType="{x:Type local:Category}" ItemsSource="{Binding Children}"> 
+                    <HierarchicalDataTemplate DataType="{x:Type vm:Category}" ItemsSource="{Binding Children}"> 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding Name}" />
                         </StackPanel>
                     </HierarchicalDataTemplate>
-                    <HierarchicalDataTemplate DataType="{x:Type local:Option}">
+                    <HierarchicalDataTemplate DataType="{x:Type vm:Option}">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding ShortText}" />
                         </StackPanel>
@@ -40,7 +38,7 @@
                 </TreeView.Resources>
             </TreeView>
 
-            <GroupBox Header="Details" Margin="0 10 0 0" Padding="0 5 0 5" >
+                <GroupBox Header="{x:Static p:Resources.details}" Margin="0 10 0 0" Padding="0 5 0 5" >
                 <ScrollViewer Height="70" VerticalScrollBarVisibility="Auto">
                     <StackPanel Name="details" Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Margin="0 0 0 5" Text="{Binding ElementName=OptionTree, Path=SelectedItem.ShortText}"></TextBlock>
@@ -48,11 +46,11 @@
                 </StackPanel>
                 </ScrollViewer>
             </GroupBox>
-            <GroupBox Header="Preise" Margin="0 10 0 0" Padding="0 5 0 5">
+                <GroupBox Header="{x:Static p:Resources.price}" Margin="0 10 0 0" Padding="0 5 0 5">
                 <DataGrid ItemsSource="{Binding ElementName=OptionTree, Path=SelectedItem.Prices}" AutoGenerateColumns="False"
                           Height="200" CanUserAddRows="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Grösse"  IsReadOnly="True">
+                            <DataGridTextColumn Header="{x:Static p:Resources.priceSize}"  IsReadOnly="True">
                             <DataGridTextColumn.Binding>
                                 <MultiBinding StringFormat="{}{0} - {1}">
                                     <Binding Path="from" />
@@ -60,7 +58,7 @@
                                 </MultiBinding>
                             </DataGridTextColumn.Binding>
                         </DataGridTextColumn>
-                        <DataGridTextColumn  Header="Preis / Einheit" Width="*"
+                            <DataGridTextColumn  Header="{x:Static p:Resources.pricePerUnit}" Width="*"
                                              IsReadOnly="True" Binding="{Binding pricePerUnit}">
                         </DataGridTextColumn>
                     </DataGrid.Columns>
