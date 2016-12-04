@@ -1,17 +1,10 @@
-﻿using System;
+﻿using netoaster;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace Normtexte
 {
@@ -22,16 +15,39 @@ namespace Normtexte
     {
 
         public static RoutedUICommand PasteFromExcel = new RoutedUICommand("Aus Excel Einfüen", "PasteFromExcel", typeof(MainWindow));
+        public static RoutedUICommand CopyToClipboard = new RoutedUICommand("Option in Zwischenablage Kopieren", "CopyForExcel", typeof(MainWindow));
+
+        private void CopyToClipboardCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            // TODO: SelectedItem is WRONG!?! MosueOver
+            if(OptionTree.SelectedItem is Option)
+            {
+                Option option = OptionTree.SelectedItem as Option;
+                string data = String.Format("\"{0}\";\"{1}\";\"{2}\";\"{3}\";\"{4}\";\"{5}\"", option.LongText, option.Unit, 10, "à Fr.", 100,  "Fr");
+                Clipboard.SetText(
+                  data, TextDataFormat.CommaSeparatedValue
+                  );
+
+                SuccessToaster.Toast(this, title: "Auswah in Zwischenablage kopiert!",
+                   position: ToasterPosition.PrimaryScreenBottomRight);
+            }
+
+
+        }
 
         private void PasteFromExcelCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+
             // TODO: Extract!
-            IDataObject dataObj = System.Windows.Clipboard.GetDataObject();
+            IDataObject dataObj = Clipboard.GetDataObject();
             string clipboardRawData = dataObj.GetData(DataFormats.CommaSeparatedValue) as string;
             if (clipboardRawData == null)
             {
-                MessageBox.Show("Oups - Die Zwischenablage scheint nicht aus Excel zu kommen :/");
+                WarningToaster.Toast(this, title: "Problem beim Einfügen", 
+                                           message: "Die Zwischenablage scheint nicht aus Excel zu kommen ☹",
+                                           position: ToasterPosition.PrimaryScreenBottomRight);
                 return;
+
             }
             string[] tokens = System.Text.RegularExpressions.Regex.Split(
                 clipboardRawData.Substring(1, clipboardRawData.Length - 2), @";");
@@ -44,6 +60,8 @@ namespace Normtexte
             string price = tokens[5];
 
         }
+
+
         private ObservableCollection<Category> _categories;
         public ObservableCollection<Category> Categories
         {
@@ -108,9 +126,22 @@ namespace Normtexte
 
 
         }
+
+        private void OptionTree_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            CopyToClipboard.Execute(null, null);
+        }
+
+        private void OptionTree_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key != System.Windows.Input.Key.Enter) return;
+
+            CopyToClipboard.Execute(null, null);
+
+        }
     }
 
-    public class Category
+    public class Category : INotifyPropertyChanged
     {
         public string Name { get; set; }
 
@@ -126,6 +157,7 @@ namespace Normtexte
             }
         }
 
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 
     public class Option
