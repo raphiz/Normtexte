@@ -1,19 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Normtexte.Models
 {
-    // TODO: INotifyPropertyChanged stuff
-    public class Option
+    public class Option : INotifyPropertyChanged
     {
-        public string ShortText { get; set; }
-        public string LongText { get; set; }
-        public string Unit { get; set; }
+        private string _shortText;
+        public string ShortText
+        {
+            get { return _shortText; }
+            set
+            {
+                _shortText = value;
+                OnPropertyChanged(nameof(ShortText));
+            }
+        }
+
+        private string _longText;
+        public string LongText
+        {
+            get { return _longText; }
+            set
+            {
+                _longText = value;
+                OnPropertyChanged(nameof(LongText));
+            }
+        }
+        private string _unit;
+        public string Unit
+        {
+            get { return _unit; }
+            set
+            {
+                _unit = value;
+                OnPropertyChanged(nameof(Unit));
+            }
+        }
         public ObservableCollection<Price> Prices { get; set; }
+
+        #region PropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(params string[] propertyName)
+        {
+            foreach (string property in propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            }
+        }
+        #endregion 
     }
 
 }

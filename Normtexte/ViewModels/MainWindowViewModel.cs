@@ -83,8 +83,8 @@ namespace Normtexte.ViewModels
 
             var prices = new ObservableCollection<Price>()
             {
-                new Price() { from=0, to=10, pricePerUnit=100 },
-                new Price() { from = 10, to = 100, pricePerUnit = 80 }
+                new Price() { From=0, To=10, PricePerUnit=100 },
+                new Price() { From = 10, To = 100, PricePerUnit = 80 }
         };
 
             var optionFassadenGerueste = new Option() { Prices = prices, ShortText = "Fassadengerüste", LongText = "Bestehende Gaube komplett abbrechen und zur Entsorgung bereitstellen. \n Dach im Bereich der neuen Gaube ausdecken,\nLattung und Konterlattung abbrechen,\nUnterdach und Dämmung ausbauen und zur Entsorgung bereitstellen" };

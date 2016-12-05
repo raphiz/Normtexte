@@ -69,15 +69,15 @@
                                             IsReadOnly="True">
                             <DataGridTextColumn.Binding>
                                 <MultiBinding StringFormat="{}{0} - {1}">
-                                    <Binding Path="from" />
-                                    <Binding Path="to" />
+                                    <Binding Path="From" />
+                                    <Binding Path="To" />
                                 </MultiBinding>
                             </DataGridTextColumn.Binding>
                         </DataGridTextColumn>
                         <DataGridTextColumn Header="{x:Static p:Resources.pricePerUnit}"
                                             Width="*"
                                             IsReadOnly="True"
-                                            Binding="{Binding pricePerUnit}">
+                                            Binding="{Binding PricePerUnit}">
                         </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Normtexte.ViewModels;
 using System.Windows;
 
 namespace Normtexte
@@ -13,5 +8,13 @@ namespace Normtexte
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            // TODO: Dependency Injection?!
+            var vm = new MainWindowViewModel();
+            MainWindow = new MainWindow(vm);
+            vm.View = MainWindow as ITreeView;
+            MainWindow.Show();
+        }
     }
 }

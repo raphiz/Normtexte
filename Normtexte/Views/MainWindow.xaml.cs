@@ -12,11 +12,10 @@ namespace Normtexte
 {
     public partial class MainWindow : Window, ITreeView
     {     
-        public MainWindow()
+        public MainWindow(object DataContext)
         {
             InitializeComponent();
-            DataContext = new MainWindowViewModel();
-            (DataContext as MainWindowViewModel).View = this as ITreeView;
+            this.DataContext = DataContext;
         }
 
         private void OptionTree_MouseDoubleClick(object sender, MouseButtonEventArgs e)

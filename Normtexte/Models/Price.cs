@@ -1,16 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Normtexte.Models
 {
-    // TODO: INotifyPropertyChanged stuff
-    public class Price
+    public class Price : INotifyPropertyChanged
     {
-        public int from { get; set; }
-        public int to { get; set; }
-        public int pricePerUnit { get; set; }
+        private double _from;
+        public double From
+        {
+            get { return _from; }
+            set
+            {
+                _from = value;
+                OnPropertyChanged(nameof(From));
+            }
+        }
+        private double _to;
+        public double To
+        {
+            get { return _to; }
+            set
+            {
+                _to = value;
+                OnPropertyChanged(nameof(To));
+            }
+        }
+        private double _pricePerUnit;
+        public double PricePerUnit
+        {
+            get { return _pricePerUnit; }
+            set
+            {
+                _pricePerUnit = value;
+                OnPropertyChanged(nameof(PricePerUnit));
+            }
+        }
+
+
+        #region PropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected virtual void OnPropertyChanged(params string[] propertyName)
+        {
+            foreach (string property in propertyName)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+            }
+        }
+        #endregion 
     }
 }
