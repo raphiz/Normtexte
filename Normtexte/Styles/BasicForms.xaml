@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:Normtexte.Styles">
+                    xmlns:local="clr-namespace:NormtexteUI.Styles">
     <Style TargetType="TextBox" BasedOn="{StaticResource MetroTextBox}">
         <Setter Property="BorderBrush" Value="{StaticResource AccentBaseColorBrush}" />
     </Style>

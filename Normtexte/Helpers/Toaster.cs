@@ -1,22 +1,23 @@
-﻿using netoaster;
-using System.Windows;
+﻿using System.Windows;
+using netoaster;
 
-namespace Normtexte.Utils
+namespace NormtexteUI.Helpers
 {
-    class Toaster
+    public class Toaster
     {
-        private static ToasterPosition position = ToasterPosition.PrimaryScreenBottomRight;
+        private static readonly ToasterPosition Position = ToasterPosition.PrimaryScreenBottomRight;
+
         internal static void Warning(string title, string message = "", Window owner = null)
         {
             WarningToaster.Toast(owner, title: title,
                                         message: message,
-                                        position: position);
+                                        position: Position);
         }
         internal static void Success(string title, string message = "", Window owner = null)
         {
             SuccessToaster.Toast(owner, title: title,
                                         message: message,
-                                        position: position);
+                                        position: Position);
         }
     }
 }

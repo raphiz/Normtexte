@@ -1,7 +1,7 @@
-﻿using Normtexte.ViewModels;
+﻿using NormtexteUI.ViewModels;
 using System.Windows;
 
-namespace Normtexte
+namespace NormtexteUI
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -10,11 +10,9 @@ namespace Normtexte
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            // TODO: Dependency Injection?!
-            var vm = new MainWindowViewModel();
-            MainWindow = new MainWindow(vm);
-            vm.View = MainWindow as ITreeView;
-            MainWindow.Show();
+            // TODO: use inject?!
+            var service = new WindowService();
+            service.ShowMainWindow();
         }
     }
 }

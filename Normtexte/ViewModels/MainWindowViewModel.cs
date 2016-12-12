@@ -1,34 +1,30 @@
 ﻿
-using Normtexte.Commands;
-using Normtexte.Models;
-using Normtexte.Utils;
-using Normtexte.Views;
+using NormtexteUI.Models;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using NormtexteUI.Helpers;
 
-namespace Normtexte.ViewModels
+namespace NormtexteUI.ViewModels
 {
-    class MainWindowViewModel
+    internal class MainWindowViewModel
     {
         public ObservableCollection<Category> Categories { get; private set; }
         public ICommand PasteCommand { get; private set; }
-        public bool CanPasteOptionFromExcel { get { return true; } }
 
         public ICommand CopyCommand { get; private set; }
-        public bool CanCopyOptionToClipboard { get { return View.SelectedOption() != null; } }
+        private WindowService Service { get; set; }
 
-        public ITreeView View { get; internal set; }
-
-        public MainWindowViewModel()
+        public MainWindowViewModel(WindowService service)
         {
             InitializeTestData();
-            PasteCommand = new PasteOptionFromExcelCommand(this);
-            CopyCommand = new CopyOptionToClipboardCommand(this);
+            Service = service;
+            CopyCommand = new RelayCommand<object>(CopySelectedOptionToClipboad, raw => raw is Option);
+            PasteCommand = new RelayCommand<object>(raw => CreateOptionFromClipboard(), raw => true);
         }
 
         internal void CreateOptionFromClipboard()
         {
-            string[] data = ClipboardUtils.GetExcelData();
+            var data = ClipboardHelpers.GetExcelData();
             if (data == null)
             {
                 Toaster.Warning(Properties.Resources.pasteFailTitle, Properties.Resources.pasteFailMessage);
@@ -38,22 +34,25 @@ namespace Normtexte.ViewModels
             {
                 Toaster.Warning(Properties.Resources.pasteFailTitle, Properties.Resources.pasteFailIncompleteMessage);
             }
-            // TODO: How to call this?!
-            // View model shall be initialized with an option, generated from the clipboard
-            // Get current category?
-            var win = new NewOptionWindow();
-            // Show modal?
-            win.ShowDialog();
+
+            var option = new Option
+            {
+                LongText = data[1],
+                Unit = data[2],
+                Prices = new ObservableCollection<Price>
+                {
+                    new Price { From = 0, To = 0, PricePerUnit = double.Parse(data[5]) },
+                }
+            };
+            Service.ShowOptionWindow(option);
+
         }
 
-        internal void CopySelectedOptionToClipboad()
+        internal void CopySelectedOptionToClipboad(object raw)
         {
-            Option option = View.SelectedOption();
-            if (option != null)
-            {
-                ClipboardUtils.SetExcelData(option.LongText, option.Unit, 10, "à Fr.", 100, "Fr");
-                Toaster.Success(Properties.Resources.copySuccessTitle);
-            }
+            var option = raw as Option;
+            ClipboardHelpers.SetExcelData(option.LongText, option.Unit, 10, "à Fr.", 100, "Fr");
+            Toaster.Success(Properties.Resources.copySuccessTitle);
         }
 
         private void InitializeTestData()
@@ -70,7 +69,6 @@ namespace Normtexte.ViewModels
                 categoryBaustelleneinrichtung
             };
 
-            var categorySubVorarbeiten = new Category() { Name = "Vorarbeiten" };
             var categorySubGeruesten = new Category() { Name = "Gerüsten" };
             var categorySubGebuehren = new Category() { Name = "Gebühren" };
 
